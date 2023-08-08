@@ -1,4 +1,4 @@
-from ta.trend import EMAIndicator, PSARIndicator
+from ta.trend import EMAIndicator, PSARIndicator, MACD
 from ta.volatility import AverageTrueRange, bollinger_hband, bollinger_lband
 from ta.momentum import RSIIndicator
 import pandas_ta as ta
@@ -17,7 +17,11 @@ class TechnicalAnalysis:
         for i in range(len(df[f'ema{EMA2}'])):
             ema_difference.append(df[f'ema{EMA2}'][i] - df[f'ema{EMA1}'][i])
         return ema_difference
-    
+        
+    def macd_difference(df):
+        try: return MACD(df['Close']).macd_diff()
+        except Exception as e: return f"Couldn't calculate macd difference: \n {e}"
+
     def ema_price(df):
         try: return ta.ema(df['Close'], length=EMA1)
         except Exception as e: return f"Couldn't calculate ema price:\n {e}"
